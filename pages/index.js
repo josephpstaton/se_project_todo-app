@@ -1,15 +1,30 @@
-//import { V4 as uuidv4 } from "https://jspm.dev/uuid";
-import "../utils/constants.js";
-import "../components/FormValidator.js";
-import "../components/Todo.js";
+import { v4 as uuidv4 } from "https://jspm.dev/uuid@8.3.2";
+
+import { initialTodos } from "../utils/constants.js";
+import FormValidator from "../components/FormValidator.js";
+
 import { validationConfig } from "../utils/constants.js";
+import Todo from "../components/Todo.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopup = document.querySelector("#add-todo-popup");
 const addTodoForm = addTodoPopup.querySelector(".popup__form");
 const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
-const todoTemplate = document.querySelector("#todo-template");
+
 const todosList = document.querySelector(".todos__list");
+const generateTodo = (data) => {
+  const todoNew = new Todo(data, "#todo-template", handleCheck, handleDelete); // in sprint 8 we will create and pass the handleCheck and handleDelete functions here
+
+  return todoNew.getView();
+};
+
+const handleCheck = () => {
+  console.log("handleCheck has run");
+};
+
+const handleDelete = () => {
+  console.log("handleDelete")
+}
 
 const openModal = (modal) => {
   modal.classList.add("popup_visible");
@@ -18,11 +33,6 @@ const openModal = (modal) => {
     modal.classList.remove("popup_visible");
   };
 
-  const todoNameEl = todoElement.querySelector(".todo__name");
-  const todoCheckboxEl = todoElement.querySelector(".todo__completed");
-  const todoLabel = todoElement.querySelector(".todo__label");
-  const todoDate = todoElement.querySelector(".todo__date");
-  const todoDeleteBtn = todoElement.querySelector(".todo__delete-btn");
   todoNameEl.textContent = data.name;
   todoCheckboxEl.checked = data.completed;
   todoTemplate.id = `todo-${data.checkboxElid}`;
@@ -53,12 +63,12 @@ addTodoCloseBtn.addEventListener("click", () => {
   closeModal(addTodoPopup);
 });
 
-const FormValidator = new FormValidator(validationConfig, addTodoForm);
-FormValidator.enableValidation();
+const addTodoFormValidator = new FormValidator(validationConfig, addTodoForm);
+addTodoFormValidator.enableValidation();
 
 addTodoForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
-  const dateNameId = evt.target.name.value;
+  const dateNameEl = evt.target.name.value;
   const dateInput = evt.target.date.value;
 
   const date = new Date(dateInput);
@@ -74,9 +84,6 @@ addTodoForm.addEventListener("submit", (evt) => {
 });
 
 initialTodos.forEach((item) => {
-  const todo = generateTodo(item);
+  const todo = generateTodo(item); 
   todosList.append(todo);
 });
-
-//export default {V4}?
-

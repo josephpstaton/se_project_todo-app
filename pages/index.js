@@ -23,36 +23,15 @@ const handleCheck = () => {
 };
 
 const handleDelete = () => {
-  console.log("handleDelete")
-}
+  console.log("handleDelete");
+};
 
 const openModal = (modal) => {
   modal.classList.add("popup_visible");
+}
 
-  const closeModal = (modal) => {
-    modal.classList.remove("popup_visible");
-  };
-
-  todoNameEl.textContent = data.name;
-  todoCheckboxEl.checked = data.completed;
-  todoTemplate.id = `todo-${data.checkboxElid}`;
-  todoCheckboxEl.id = `todo-${data.checkboxElid}`;
-  todoLabel.setAttribute("for", `todo-${data.labelid}`);
-
-  const dueDate = new Date(data.date);
-  if (!isNaN(dueDate)) {
-    todoDate.textContent = `Due: ${dueDate.toLocaleString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    })}`;
-  }
-
-  todoDeleteBtn.addEventListener("click", () => {
-    todoElement.remove();
-  });
-
-  return todoElement;
+const closeModal = (modal) => {
+  modal.classList.remove("popup_visible");
 };
 
 addTodoButton.addEventListener("click", () => {
@@ -68,22 +47,21 @@ addTodoFormValidator.enableValidation();
 
 addTodoForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
-  const dateNameEl = evt.target.name.value;
+  const name = evt.target.name.value;
   const dateInput = evt.target.date.value;
 
   const date = new Date(dateInput);
   date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
-  const id = uuidv4(V4);
+  const id = uuidv4();
   const values = { name, date, id };
   const todo = generateTodo(values);
   todosList.append(todo);
   closeModal(addTodoPopup);
 
-  resetValidation(addTodoForm);
-  addTodoForm.reset();
+  addTodoFormValidator.resetValidation();
 });
 
 initialTodos.forEach((item) => {
-  const todo = generateTodo(item); 
+  const todo = generateTodo(item);
   todosList.append(todo);
 });

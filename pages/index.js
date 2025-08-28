@@ -42,6 +42,11 @@ addTodoCloseBtn.addEventListener("click", () => {
   closeModal(addTodoPopup);
 });
 
+const renderTodo = (item) => {
+  const todo = generateTodo(item);
+  todosList.append(todo);
+};
+
 const addTodoFormValidator = new FormValidator(validationConfig, addTodoForm);
 addTodoFormValidator.enableValidation();
 
@@ -54,7 +59,7 @@ addTodoForm.addEventListener("submit", (evt) => {
   date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
   const id = uuidv4();
   const values = { name, date, id };
-  //renderTodo(values); <----
+  renderTodo(values);
 
   closeModal(addTodoPopup);
 
@@ -62,8 +67,5 @@ addTodoForm.addEventListener("submit", (evt) => {
 });
 
 initialTodos.forEach((item) => {
-  const todo = new Todo(item, "#todo-template", handleCheck, handleDelete);
-  const todoElement = todo.getView();
-
-  document.querySelector(".todos__list").append(todoElement);
+  renderTodo(item);
 });

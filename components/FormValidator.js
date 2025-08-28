@@ -35,7 +35,7 @@ class FormValidator {
       this._submitButtonSelector
     );
 
-    this._toggleButtonState(this._buttonElement);
+    this._toggleButtonState();
 
     this._inputList.forEach((inputElement) => {
       inputElement.addEventListener("input", () => {
@@ -47,10 +47,7 @@ class FormValidator {
 
   resetValidation() {
     this._formEl.reset();
-    const buttonElement = this._formEl.querySelector(
-      this._submitButtonSelector
-    );
-    this._toggleButtonState(buttonElement);
+    this._toggleButtonState();
   }
 
   _hideInputError(formElement, inputElement) {
